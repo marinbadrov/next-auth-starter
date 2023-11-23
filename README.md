@@ -1,8 +1,22 @@
 This is a Next.js starter template/example of using next auth with postgre.
 
-## Getting Started
+Check out the live app [here](next-auth-starter-theta.vercel.app)
 
-First, run the development server:
+## To run locally in development: 
+
+First, install the dependencies 
+
+```bash
+npm install 
+# or
+yarn install 
+# or
+pnpm install
+# or
+bun install 
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
