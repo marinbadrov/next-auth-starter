@@ -1,24 +1,40 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-export default async function RegisterForm() {
+type IFormInput = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export default function RegisterForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm<
+    IFormInput
+  >({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
   const router = useRouter();
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
+    console.log(formData);
     const res = await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify({
-        email: formData.get("email"),
-        password: formData.get("password"),
+        ...formData,
       }),
     });
     if (res.ok) {
       router.push("/login");
     }
-  }
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -30,11 +46,32 @@ export default async function RegisterForm() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-6"
             action="#"
             method="POST"
           >
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-white"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <input
+                  {...register("username", {
+                    required: "Username is required.",
+                  })}
+                  className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                />
+              </div>
+              <p>
+                {errors.username &&
+                  errors.username.message}
+              </p>
+            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -44,14 +81,14 @@ export default async function RegisterForm() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
+                  {...register("email", { required: "Email is required." })}
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
+              <p>
+                {errors.email &&
+                  errors.email.message}
+              </p>
             </div>
 
             <div>
@@ -65,14 +102,21 @@ export default async function RegisterForm() {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
+                  {...register("password", {
+                    required: "Password is required.",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be longer than 6 characters.",
+                    },
+                  })}
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
+
+              <p>
+                {errors.password &&
+                  errors.password.message}
+              </p>
             </div>
 
             <div>

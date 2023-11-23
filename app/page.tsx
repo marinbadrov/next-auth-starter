@@ -6,7 +6,7 @@ import Link from "next/link";
 export default async function Home() {
   const session = await getServerSession();
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 text-white">
+    <main className="flex min-h-screen flex-col items-center p-24">
       <h2 className="text-2xl mb-10">Simple auth example</h2>
       {!!session
         ? (
