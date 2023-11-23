@@ -1,4 +1,4 @@
-import RegisterForm from "../api/auth/register/form";
+import RegisterForm from "./form";
 
 export default async function RegisterPage() {
   return (

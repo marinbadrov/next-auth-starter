@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 
 export default async function RegisterForm() {
+  const router = useRouter();
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -13,7 +15,9 @@ export default async function RegisterForm() {
         password: formData.get("password"),
       }),
     });
-    console.log(res);
+    if (res.ok) {
+      router.push("/login");
+    }
   }
   return (
     <>
