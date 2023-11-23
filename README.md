@@ -4,6 +4,8 @@ Check out the live app [here](https://next-auth-starter-theta.vercel.app)
 
 ## To make it work locally: 
 
+- Create New Project on [Vercel](https://vercel.com)
+- import your github repository
 - go to your Vercel Projects -> Storage -> Create database -> Postgres
 - run `vercel link` in your project folder
 - run `vercel env pull .env.development.local` in your project folder
