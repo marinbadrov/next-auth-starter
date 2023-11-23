@@ -1,4 +1,5 @@
 import Logout from "@/components/logout";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -16,12 +17,12 @@ export default async function Home() {
           </div>
         )
         : (
-          <div className="flex flex-col space-y-4 items-center">
+          <div className="flex space-x-4 items-center">
             <Link href="/register" className="text-xl flex items-center">
-              <ArrowRight /> Register an account
+              <Button variant="outline">Register</Button>
             </Link>
             <Link href="/login" className="text-xl flex items-center">
-              <ArrowRight /> Login to your account
+              <Button variant="outline">Login</Button>
             </Link>
           </div>
         )}
