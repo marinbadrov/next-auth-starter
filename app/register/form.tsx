@@ -23,12 +23,9 @@ export default function RegisterForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
-    console.log(formData);
     const res = await fetch("/api/auth/register", {
       method: "POST",
-      body: JSON.stringify({
-        ...formData,
-      }),
+      body: JSON.stringify(formData),
     });
     if (res.ok) {
       router.push("/login");

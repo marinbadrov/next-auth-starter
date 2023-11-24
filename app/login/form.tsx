@@ -2,23 +2,40 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type IFormInput = {
+  email: string;
+  password: string;
+};
 
 export default function LoginForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm<
+    IFormInput
+  >({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const router = useRouter();
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
     const response = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
+      email: formData.email,
+      password: formData.password,
       redirect: false,
     });
+
     if (response?.ok) {
       router.push("/");
-      router.refresh();
     }
-  }
+
+    if (response?.status === 401) {
+      alert("Email or password invalid.");
+    }
+  };
 
   return (
     <>
@@ -31,7 +48,7 @@ export default function LoginForm() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-6"
             action="#"
             method="POST"
@@ -45,14 +62,14 @@ export default function LoginForm() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
+                  {...register("email", { required: "Email is required." })}
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
+              <p>
+                {errors.email &&
+                  errors.email.message}
+              </p>
             </div>
 
             <div>
@@ -66,14 +83,15 @@ export default function LoginForm() {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
+                  {...register("password")}
                   className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 />
               </div>
+
+              <p>
+                {errors.password &&
+                  errors.password.message}
+              </p>
             </div>
 
             <div>

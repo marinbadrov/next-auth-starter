@@ -18,6 +18,7 @@ Check out the live app [here](https://next-auth-starter-theta.vercel.app)
 ```
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL
 )
