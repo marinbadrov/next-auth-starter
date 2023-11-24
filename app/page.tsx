@@ -19,10 +19,10 @@ export default async function Home() {
         : (
           <div className="flex space-x-4 items-center">
             <Link href="/register" className="text-xl flex items-center">
-              <Button variant="outline">REGISTER</Button>
+              <Button>REGISTER</Button>
             </Link>
             <Link href="/login" className="text-xl flex items-center">
-              <Button variant="outline">LOGIN</Button>
+              <Button>LOGIN</Button>
             </Link>
           </div>
         )}
