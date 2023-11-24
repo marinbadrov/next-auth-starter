@@ -30,6 +30,7 @@ export default function LoginForm() {
 
     if (response?.ok) {
       router.push("/");
+      router.refresh();
     }
 
     if (response?.status === 401) {
